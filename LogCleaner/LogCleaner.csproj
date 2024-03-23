@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net470</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    
+    <GamePath>D:\Games\Oculus\Software\another-axiom-gorilla-tag\</GamePath>
+    <ManagedAssembliesPath>$(GamePath)/Gorilla Tag_Data\Managed</ManagedAssembliesPath>
+    <BepInEx_Path>$(GamePath)/BepInEx/</BepInEx_Path>
+    <PluginsPath>$(BepInEx_Path)/plugins/</PluginsPath>
+  </PropertyGroup>
+
+  <!-- Output -->
+  <Target AfterTargets="Build" Name="Output">
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(GamePath)/BepInEx/plugins/LogSuppresser.dll" />
+  </Target>
+
+  <!-- Dependencies -->
+  <ItemGroup>
+    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.2" PrivateAssets="all" />
+    
+    <Reference Include="$(ManagedAssembliesPath)/UnityEngine.CoreModule.dll"
+               Publicize="true"/>
+    <Reference Include="$(GamePath)/**" 
+               Exclude=
+               "$(GamePath)/BepInEx/core/0Harmony20.dll;
+               $(PluginsPath)/LogSuppresser.dll;
+               $(GamePath)/BepInEx/LogOutput.log;
+               $(GamePath)/BepInEx/cache/harmony_interop_cache.dat;
+               $(ManagedAssembliesPath)/UnityEngine.CoreModule.dll"/>
+  </ItemGroup>  
+</Project>
